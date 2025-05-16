@@ -43,3 +43,18 @@ func TestValidateStructWithInvalidStruct(t *testing.T) {
 	assert.Equal(t, err, errors.New("data is not a struct"))
 	assert.Equal(t, ok, false)
 }
+
+func TestValidateStructWithInvalidEmail(t *testing.T) {
+	type User struct {
+		Name  string `validate:"required"`
+		Email string `validate:"required,email"`
+	}
+
+	user := User{Name: "John", Email: "john@example"}
+
+	errs, ok, err := ValidateStruct(user)
+
+	assert.Equal(t, err, nil)
+	assert.Equal(t, ok, false)
+	assert.Equal(t, errs, []string{"Key: 'User.Email' Error:Field validation for 'Email' failed on the 'email' tag"})
+}
