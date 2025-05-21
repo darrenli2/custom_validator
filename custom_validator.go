@@ -7,7 +7,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func ValidateStruct(data interface{}) (errs []string, ok bool, err error) {
+func ValidateStruct(data interface{}) (messages []string, ok bool, err error) {
 	if !isStruct(data) {
 		return nil, false, errors.New("data is not a struct")
 	}
@@ -16,9 +16,9 @@ func ValidateStruct(data interface{}) (errs []string, ok bool, err error) {
 	e := validate.Struct(data)
 	if e != nil {
 		for _, err := range e.(validator.ValidationErrors) {
-			errs = append(errs, err.Error())
+			messages = append(messages, err.Error())
 		}
-		return errs, false, nil
+		return messages, false, nil
 	}
 	return nil, true, nil
 }
